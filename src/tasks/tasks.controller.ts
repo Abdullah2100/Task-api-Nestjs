@@ -12,38 +12,33 @@ import { TasksService } from './tasks.service';
 export class TasksController {
     constructor(private tasksService: TasksService) { }
 
-    // @Get()
-    // getTask(@Query()getaskquey:GetDtoTaskFilter): Task[] {
-    //    if(Object.keys(getaskquey).length){
-    //     return this.tasksService.getTaskWithFilter(getaskquey)
-    //    }
-    //    else{
-    //      return this.tasksService.getAllTask()
-    //    }
-    // }
+    @Get()
+    getTask(@Query()getaskquey:GetDtoTaskFilter):Promise< Task[]> {
+      return this.tasksService.getTasks(getaskquey)
+    }
 
-    // @Post()
-    //  createTasks(
-    //    @Body() createTaskDto:createTaskDto):Task {
-    //   return this.tasksService.createTask(createTaskDto);
+    @Post()
+     createTasks(
+       @Body() createTaskDto:createTaskDto):Promise<Task>{
+      return this.tasksService.ceateTask(createTaskDto);
 
-    // }
+    }
     @Get('/:id')
      getTaskById(@Param('id') id:string):Promise<Task>{
       return this.tasksService.findOnById(id);
     }
 
-    // @Delete('/:id')
-    // deletAllTask(@Param('id')id:string):void{
-    //   return this.tasksService.deleteAllTask(id)
-    // }
+    @Delete('/:id')
+    deletAllTask(@Param('id')id:string):Promise<void>{
+      return this.tasksService.deletTask(id)
+    }
 
-    // @Patch('/:id/status')
-    // updateTaskState(
-    //  @Param('id')id:string,
-    //  @Body()updateStatus:UpdateStatusDto
-    // ):Task{
-    //   const{status}=updateStatus;
-    //   return this.tasksService.updateTasks(id,status)
-    // }
+    @Patch('/:id/status')
+    updateTaskState(
+     @Param('id')id:string,
+     @Body()updateStatus:UpdateStatusDto
+    ):Promise<Task>{
+      const{status}=updateStatus;
+      return this.tasksService.updateStatus(id,status)
+    }
 }

@@ -2,7 +2,10 @@ import { Module } from '@nestjs/common';
 
 import { TasksModule } from './tasks/tasks.module';
 import { TypeOrmModule } from '@nestjs/typeorm'
-import { Task } from './tasks/task.entity';
+
+import { AuthModule } from './auth/auth.module';
+import { join } from 'path';
+
 
 
 
@@ -15,11 +18,14 @@ import { Task } from './tasks/task.entity';
       username: 'pjagnftu',
       password: '3Ferrm81wsK0JW2GSrR4QQ6GrOsCvKlz',
       database: 'pjagnftu',
-      entities:[Task], 
       synchronize: true,
-      keepConnectionAlive:false
-
-    })
+     
+      entities: [join(__dirname , '**','*.entity.{js,ts}')],
+      
+      
+      
+    }),
+    AuthModule
   ],
  
 

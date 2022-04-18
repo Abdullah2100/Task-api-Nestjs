@@ -1,5 +1,8 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, Query } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, Query, UseGuards } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
 import { getMaxListeners } from 'process';
+import { GetUser } from 'src/auth/get-user.decorator';
+import { User } from 'src/auth/user.entity';
 import { Task } from './task.entity';
 import { createTaskDto } from './taskdto/create-task.dto';
 import { GetDtoTaskFilter } from './taskdto/get_task.to';
@@ -9,6 +12,7 @@ import { UpdateStatusDto } from './taskdto/update_statuse.dto';
 import { TasksService } from './tasks.service';
 
 @Controller('tasks')
+@UseGuards(AuthGuard())
 export class TasksController {
     constructor(private tasksService: TasksService) { }
 
@@ -19,8 +23,9 @@ export class TasksController {
 
     @Post()
      createTasks(
-       @Body() createTaskDto:createTaskDto):Promise<Task>{
-      return this.tasksService.ceateTask(createTaskDto);
+       @Body() createTaskDto:createTaskDto,
+       @GetUser() user:User):Promise<Task>{
+      return this.tasksService.ceateTask(createTaskDto,user);
 
     }
     @Get('/:id')

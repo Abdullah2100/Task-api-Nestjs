@@ -5,7 +5,8 @@ import { Repository } from 'typeorm';
 import { User } from './user.entity';
 import * as bcrypt from 'bcrypt'
 import { JwtService } from '@nestjs/jwt';
-import { JwtPaylad } from './dto/jwt-paylod.interface';
+import { JwtPaylad } from './jwt-paylod.interface';
+
 
 @Injectable()
 export class AuthService {
@@ -34,7 +35,8 @@ export class AuthService {
             const payload:JwtPaylad={username}
             const jwtToken:string =await this.jwtService.sign(payload)
             return {jwtToken};
-        }
+        }else {
         throw new UnauthorizedException("please chack login creadentioal")
+        }
     }
 }

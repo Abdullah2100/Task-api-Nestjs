@@ -3,7 +3,7 @@ import { PassportStrategy } from "@nestjs/passport";
 import { InjectRepository } from "@nestjs/typeorm";
 import { ExtractJwt, Strategy } from "passport-jwt";
 import { Repository } from "typeorm";
-import { User } from "../user.entity";
+import { User } from "./user.entity";
 import { JwtPaylad } from "./jwt-paylod.interface";
 
 @Injectable()
@@ -14,12 +14,13 @@ export class JWTStrategy extends PassportStrategy(Strategy){
     ){
         super({
         secretOrKey:'thsisjis@fsdf',
-        jwtFormRequest:ExtractJwt.fromAuthHeaderAsBearerToken()
+       
+           jwtFromRequest:ExtractJwt.fromAuthHeaderAsBearerToken(), //the doc migratin fom 2.x to 3.x using jwt you should use  //ExtractJwt.fromAuthHeaderWithScheme('jwt')
         });
     }
-    async validate(payload:JwtPaylad){
+    async validate(payload:JwtPaylad): Promise<User>{
         const {username}=payload;
-        const user=this.userRepository.findOne({where:{username:username}})
+        const user=await this.userRepository.findOne({where:{username:username}})
         if(!user){
             throw new NotFoundException();
         }

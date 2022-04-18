@@ -1,0 +1,5 @@
+export enum TaskStatu{
+    OPEN='OPEN',
+    CLOSE='CLOSE',
+    UNDERTHEPROGERESS="UNDERTHEPROGERESS"
+}

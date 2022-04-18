@@ -19,8 +19,8 @@ import { join } from 'path';
       password: '3Ferrm81wsK0JW2GSrR4QQ6GrOsCvKlz',
       database: 'pjagnftu',
       synchronize: true,
-     
-      entities: [join(__dirname , '**','*.entity.{js,ts}')],
+      autoLoadEntities: true
+      // entities: [join(__dirname , '**','*.entity.{js,ts}')],
       
       
       

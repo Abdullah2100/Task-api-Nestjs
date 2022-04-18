@@ -1,5 +1,5 @@
 import { IsBoolean, IsEnum } from "class-validator";
-import { TaskStatu } from "../model/taskState";
+import { TaskStatu } from "../task-Stateus.enum";
 
 
 export class UpdateStatusDto{

@@ -14,7 +14,7 @@ import { async } from 'rxjs';
 @Module({
   imports: [TasksModule,
     ConfigModule.forRoot({
-      envFilePath:[`${process.env.stage} `]
+      envFilePath:[`${process.env.stage}.env `]
     }),
     TypeOrmModule.forRootAsync({
      

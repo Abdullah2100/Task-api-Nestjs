@@ -14,36 +14,39 @@ import { TasksService } from './tasks.service';
 @Controller('tasks')
 @UseGuards(AuthGuard())
 export class TasksController {
-    constructor(private tasksService: TasksService) { }
+  constructor(private tasksService: TasksService) { }
 
-    @Get()
-    getTask(@Query()getaskquey:GetDtoTaskFilter):Promise< Task[]> {
-      return this.tasksService.getTasks(getaskquey)
-    }
+  @Get()
+  getTask(@Query() getaskquey: GetDtoTaskFilter, @GetUser() user: User): Promise<Task[]> {
+    return this.tasksService.getTasks(getaskquey, user)
+  }
 
-    @Post()
-     createTasks(
-       @Body() createTaskDto:createTaskDto,
-       @GetUser() user:User):Promise<Task>{
-      return this.tasksService.ceateTask(createTaskDto,user);
+  @Post()
+  createTasks(
+    @Body() createTaskDto: createTaskDto,
+    @GetUser() user: User): Promise<Task> {
+    return this.tasksService.ceateTask(createTaskDto, user);
 
-    }
-    @Get('/:id')
-     getTaskById(@Param('id') id:string):Promise<Task>{
-      return this.tasksService.findOnById(id);
-    }
+  }
+  @Get('/:id')
+  getTaskById(@Param('id') id: string,
+    @GetUser() user: User): Promise<Task> {
+    return this.tasksService.findOnById(id, user);
+  }
 
-    @Delete('/:id')
-    deletAllTask(@Param('id')id:string):Promise<void>{
-      return this.tasksService.deletTask(id)
-    }
+  @Delete('/:id')
+  deletAllTask(@Param('id') id: string,
+    @GetUser() user: User,): Promise<void> {
+    return this.tasksService.deletTask(id, user)
+  }
 
-    @Patch('/:id/status')
-    updateTaskState(
-     @Param('id')id:string,
-     @Body()updateStatus:UpdateStatusDto
-    ):Promise<Task>{
-      const{status}=updateStatus;
-      return this.tasksService.updateStatus(id,status)
-    }
+  @Patch('/:id/status')
+  updateTaskState(
+    @Param('id') id: string,
+    @Body() updateStatus: UpdateStatusDto,
+    @GetUser() user: User
+  ): Promise<Task> {
+    const { status } = updateStatus;
+    return this.tasksService.updateStatus(id, status, user)
+  }
 }

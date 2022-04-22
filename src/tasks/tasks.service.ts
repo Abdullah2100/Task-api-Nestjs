@@ -17,9 +17,10 @@ export class TasksService {
  
 
 
-async getTasks(taskfilter:GetDtoTaskFilter):Promise<Task[]>{
+async getTasks(taskfilter:GetDtoTaskFilter,user:User):Promise<Task[]>{
     const{status,search}=taskfilter
    const queryTask=this.TaskRepository.createQueryBuilder('task');
+   queryTask.where({ user });
    if(status){
        queryTask.andWhere('task.status = :status',{status});
    }
@@ -31,8 +32,8 @@ async getTasks(taskfilter:GetDtoTaskFilter):Promise<Task[]>{
    const task=await queryTask.getMany()
    return task;  
 }
-  async findOnById(id:string):Promise<Task>{
-  const fond=await this.TaskRepository.findOne({where:{id:id}})
+  async findOnById(id:string,user:User):Promise<Task>{
+  const fond=await this.TaskRepository.findOne({where:{id,user}})
   if(!fond){
       throw new NotFoundException(`user with ${id} not found`)
   }
@@ -50,15 +51,15 @@ const tasks=this.TaskRepository.create({
 return await this.TaskRepository.save(tasks);
 }
 
-async deletTask(id:string): Promise<void>{
-    const reuslt=await this.TaskRepository.delete(id);
+async deletTask(id:string,user:User): Promise<void>{
+    const reuslt=await this.TaskRepository.delete({id,user});
     if(reuslt.affected === 0){
         throw new NotFoundException(`the user with ${id} not found`);
     }
  
 }
-async updateStatus(id:string,status:TaskStatu):Promise<Task>{
-  const task=await this.findOnById(id)
+async updateStatus(id:string,status:TaskStatu,user:User):Promise<Task>{
+  const task=await this.findOnById(id,user)
   task.status=status;
  return await this.TaskRepository.save(task)
  

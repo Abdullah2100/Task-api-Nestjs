@@ -5,15 +5,17 @@ import { ExtractJwt, Strategy } from "passport-jwt";
 import { Repository } from "typeorm";
 import { User } from "./user.entity";
 import { JwtPaylad } from "./jwt-paylod.interface";
+import { ConfigService } from "@nestjs/config";
 
 @Injectable()
 
 export class JWTStrategy extends PassportStrategy(Strategy){
     constructor(
-        @InjectRepository(User) private userRepository: Repository<User>
+        @InjectRepository(User) private userRepository: Repository<User>,
+        private configService: ConfigService,
     ){
         super({
-        secretOrKey:'thsisjis@fsdf',
+        secretOrKey:configService.get('JWT_SECRET'),
        
            jwtFromRequest:ExtractJwt.fromAuthHeaderAsBearerToken(), //the doc migratin fom 2.x to 3.x using jwt you should use  //ExtractJwt.fromAuthHeaderWithScheme('jwt')
         });
@@ -27,3 +29,4 @@ export class JWTStrategy extends PassportStrategy(Strategy){
         return user;
     }
 }
+

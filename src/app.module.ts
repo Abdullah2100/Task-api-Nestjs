@@ -5,25 +5,33 @@ import { TypeOrmModule } from '@nestjs/typeorm'
 
 import { AuthModule } from './auth/auth.module';
 import { join } from 'path';
+import {ConfigModule, ConfigService} from '@nestjs/config'
+import { async } from 'rxjs';
 
 
 
 
 @Module({
   imports: [TasksModule,
-    TypeOrmModule.forRoot({
-      type: 'postgres',
-      host: 'satao.db.elephantsql.com',
-      port: 5432,
-      username: 'pjagnftu',
-      password: '3Ferrm81wsK0JW2GSrR4QQ6GrOsCvKlz',
-      database: 'pjagnftu',
-      synchronize: true,
-      autoLoadEntities: true
-      // entities: [join(__dirname , '**','*.entity.{js,ts}')],
-      
-      
-      
+    ConfigModule.forRoot({
+      envFilePath:[`${process.env.stage} `]
+    }),
+    TypeOrmModule.forRootAsync({
+     
+      imports:[ConfigModule]
+,inject:[ConfigService],
+useFactory:async (configService:ConfigService)=>{
+  return{
+    type:'postgres',
+    host: configService.get('host'),
+    port: configService.get(' port'),
+    username: configService.get('username'),
+    password: configService.get('password'),
+    database: configService.get('database'),
+    synchronize: true,
+    autoLoadEntities: true
+  }
+}
     }),
     AuthModule
   ],

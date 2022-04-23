@@ -17,39 +17,41 @@ import { getEnvPath } from './common/helper/env.helper';
     ConfigModule.forRoot({
       envFilePath: [`.env.stage.${process.env.STAGE}`],
     }),
-    TypeOrmModule.forRootAsync({
-      imports: [ConfigModule],
-      inject: [ConfigService],
-      useFactory: async (configService: ConfigService) => {
+
+    // Async({
+    //   imports: [ConfigModule],
+    //   inject: [ConfigService],
+    //   useFactory: async (configService: ConfigService) => {
        
-        return {
-          // ssl: isProduction,
-          extra: {
-            ssl:{
-              rejectUnauthorized: true
-            }
-          },
-          type: 'postgres',
-          autoLoadEntities: true,
-          synchronize: true,
-          host: configService.get('DB_HOST'),
-          port: configService.get('port'),
-          username: configService.get('username'),
-          password: configService.get('password'),
-          database: configService.get('database'),
-        };
-      },
-    }),
-//     .forRoot({
-//   type:'postgres',
-//   host:process.env.host,
-//   port:Number(process.env.port),
-//   username:process.env.username,
-//   password:process.env.password,
-//   database:process.env.database,
-//   synchronize: true,
-//   autoLoadEntities: true
-// }),
+    //     return {
+    //       // ssl: isProduction,
+    //       extra: {
+    //         ssl:{
+    //           rejectUnauthorized: true
+    //         }
+    //       },
+    //       type: 'postgres',
+    //       autoLoadEntities: true,
+    //       synchronize: true,
+    //       host: configService.get('DB_HOST'),
+    //       port: configService.get('port'),
+    //       username: configService.get('username'),
+    //       password: configService.get('password'),
+    //       database: configService.get('database'),
+    //     };
+    //   },
+    // }),
+//     .forRoot
+TypeOrmModule.forRoot({
+  type:'postgres',
+  host:process.env.host,
+  port:Number(process.env.port),
+  username:process.env.username,
+  password:process.env.password,
+  database:process.env.database,
+  synchronize: true,
+  autoLoadEntities: true
+}),
     
     AuthModule
   ],

@@ -15,8 +15,8 @@ export class JWTStrategy extends PassportStrategy(Strategy){
         private configService: ConfigService,
     ){
         super({
-        // secretOrKey:configService.get('JWT_SECRET'),
-        secretOrKey:process.env.JWT_SECRET,
+        secretOrKey:configService.get('JWT_SECRET'),
+        // secretOrKey:process.env.JWT_SECRET,
        
            jwtFromRequest:ExtractJwt.fromAuthHeaderAsBearerToken(), //the doc migratin fom 2.x to 3.x using jwt you should use  //ExtractJwt.fromAuthHeaderWithScheme('jwt')
         });

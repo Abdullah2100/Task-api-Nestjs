@@ -8,34 +8,22 @@ import { join } from 'path';
 import {ConfigModule, ConfigService} from '@nestjs/config'
 import { async } from 'rxjs';
 import { getEnvPath } from './common/helper/env.helper';
+import { PostgresDBConfigService } from './typeOrmOption';
 
 
 
-const envFilePath: string = getEnvPath(`${__dirname}/common/envs`);
+// const envFilePath: string = getEnvPath(`${__dirname}/common/envs`);
 @Module({
   imports: [TasksModule,
-    ConfigModule.forRoot({
-      envFilePath:envFilePath
-    }),
-    TypeOrmModule.forRootAsync({
-      imports: [ConfigModule],
-      inject: [ConfigService],
-      useFactory: async (configService: ConfigService) => {
-        const isProduction = configService.get('STAGE') === 'prod';
-
-        return {
-          ssl:true,
-          type: 'postgres',
-          autoLoadEntities: true,
-          synchronize: true,
-          host: configService.get('DB_HOST'),
-          port: configService.get('port'),
-          username: configService.get('username'),
-          password: configService.get('password'),
-          database: configService.get('database'),
-        };
-      },
-    })
+    
+      ConfigModule.forRoot({
+        isGlobal: true
+      }),
+      TypeOrmModule.forRootAsync({
+        useClass: PostgresDBConfigService,
+        inject: [PostgresDBConfigService]
+      })
+   
 //     .forRoot({
 //   type:'postgres',
 //   host:process.env.host,

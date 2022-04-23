@@ -15,7 +15,7 @@ const envFilePath: string = getEnvPath(`${__dirname}/common/envs`);
 @Module({
   imports: [TasksModule,
     ConfigModule.forRoot({
-      envFilePath:[envFilePath]
+      envFilePath:envFilePath
     }),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],

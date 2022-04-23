@@ -43,6 +43,11 @@ import { getEnvPath } from './common/helper/env.helper';
     // }),
 //     .forRoot
 TypeOrmModule.forRoot({
+  extra: {
+            ssl:{
+              rejectUnauthorized: true
+            }
+          },
   type:'postgres',
   host:process.env.host,
   port:Number(process.env.port),

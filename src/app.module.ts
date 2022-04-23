@@ -45,7 +45,7 @@ import { getEnvPath } from './common/helper/env.helper';
 TypeOrmModule.forRoot({
   extra: {
             ssl:{
-              rejectUnauthorized: true
+              rejectUnauthorized: false
             }
           },
   type:'postgres',

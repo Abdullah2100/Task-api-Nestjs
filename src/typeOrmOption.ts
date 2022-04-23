@@ -10,7 +10,7 @@ export class PostgresDBConfigService implements TypeOrmOptionsFactory {
     createTypeOrmOptions(): TypeOrmModuleOptions {
         return {
             
-            ssl:true,
+            extra: { ssl: true, rejectUnauthorized: false },
             type: 'postgres',
             autoLoadEntities: true,
             synchronize: true,

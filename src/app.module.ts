@@ -8,22 +8,38 @@ import { join } from 'path';
 import {ConfigModule, ConfigService} from '@nestjs/config'
 import { async } from 'rxjs';
 import { getEnvPath } from './common/helper/env.helper';
-import { PostgresDBConfigService } from './typeOrmOption';
 
 
 
-// const envFilePath: string = getEnvPath(`${__dirname}/common/envs`);
+
 @Module({
   imports: [TasksModule,
-    
-      ConfigModule.forRoot({
-        isGlobal: true
-      }),
-      TypeOrmModule.forRootAsync({
-        useClass: PostgresDBConfigService,
-        inject: [PostgresDBConfigService]
-      })
-   
+    ConfigModule.forRoot({
+      envFilePath: [`.env.stage.${process.env.STAGE}`],
+    }),
+    TypeOrmModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: async (configService: ConfigService) => {
+       
+        return {
+          // ssl: isProduction,
+          extra: {
+            ssl:{
+              rejectUnauthorized: true
+            }
+          },
+          type: 'postgres',
+          autoLoadEntities: true,
+          synchronize: true,
+          host: configService.get('DB_HOST'),
+          port: configService.get('port'),
+          username: configService.get('username'),
+          password: configService.get('password'),
+          database: configService.get('database'),
+        };
+      },
+    }),
 //     .forRoot({
 //   type:'postgres',
 //   host:process.env.host,
@@ -35,7 +51,7 @@ import { PostgresDBConfigService } from './typeOrmOption';
 //   autoLoadEntities: true
 // }),
     
-    ,AuthModule
+    AuthModule
   ],
  
 

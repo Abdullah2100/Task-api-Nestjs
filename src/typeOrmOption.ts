@@ -19,6 +19,7 @@ export class PostgresDBConfigService implements TypeOrmOptionsFactory {
             username:this.configService.get<string>('username'),
             password: this.configService.get<string>('password'),
             database: this.configService.get<string>('database'),
+            url:this.configService.get<string>('db_url')
     };
   }
 }

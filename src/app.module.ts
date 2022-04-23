@@ -15,7 +15,8 @@ import { getEnvPath } from './common/helper/env.helper';
 @Module({
   imports: [TasksModule,
     ConfigModule.forRoot({
-      envFilePath: [`.env.stage.${process.env.STAGE}`],
+      envFilePath: '.production.env',
+      ignoreEnvFile: true,
     }),
 
     // Async({
@@ -48,12 +49,13 @@ TypeOrmModule.forRoot({
               rejectUnauthorized: false
             }
           },
-  type:'postgres',
-  host:process.env.host,
-  port:Number(process.env.port),
-  username:process.env.username,
-  password:process.env.password,
-  database:process.env.database,
+  // type:'postgres',
+  // host:process.env.host,
+  // port:Number(process.env.port),
+  // username:process.env.username,
+  // password:process.env.password,
+  // database:process.env.database,
+  url:process.env.db_url,
   synchronize: true,
   autoLoadEntities: true
 }),

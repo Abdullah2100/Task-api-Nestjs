@@ -6,6 +6,8 @@ import { TypeOrmModule } from '@nestjs/typeorm'
 import { AuthModule } from './auth/auth.module';
 import { join } from 'path';
 import {ConfigModule, ConfigService} from '@nestjs/config'
+import { configValidationSchema } from './config.schema';
+
 
 
 
@@ -13,7 +15,8 @@ import {ConfigModule, ConfigService} from '@nestjs/config'
 @Module({
   imports: [TasksModule,
     ConfigModule.forRoot({
-      envFilePath: '.production.env',
+      envFilePath: [`.env.stage.${process.env.STAGE}`],
+      validationSchema: configValidationSchema,
       
     }),
 
@@ -21,46 +24,44 @@ import {ConfigModule, ConfigService} from '@nestjs/config'
       imports: [ConfigModule],
       inject: [ConfigService],
       useFactory: async (configService: ConfigService) => {
-       
+        const isProduction = configService.get('STAGE') === 'prod';
+
         return {
-          // ssl: isProduction,
+          ssl: isProduction,
           extra: {
-            ssl:{
-              rejectUnauthorized: true
-            }
+            ssl: isProduction ? { rejectUnauthorized: false } : null,
           },
           type: 'postgres',
           autoLoadEntities: true,
           synchronize: true,
-          host: configService.get('host'),
-          port: configService.get('port'),
-          username: configService.get('username'),
-          password: configService.get('password'),
-          database: configService.get('database'),
+          host: configService.get('DB_HOST'),
+          port: configService.get('DB_PORT'),
+          username: configService.get('DB_USERNAME'),
+          password: configService.get('DB_PASSWORD'),
+          database: configService.get('DB_DATABASE'),
         };
       },
     }),
 //     .forRoot
 // TypeOrmModule.forRoot({
-
-//   extra: { encrypt: false,
-//   //           ssl:{
-//   //             rejectUnauthorized: false
-//   //           }
-//           },
-//   type:'postgres',
-//   host:process.env.host,
-//   port:Number(process.env.port),
-//   username:process.env.username,
-//   password:process.env.password,
-//   database:process.env.database,
+//     type:'postgres',
+//   host:'ec2-52-54-212-232.compute-1.amazonaws.com',
+//   port:5432,
+//   username:'pzhtlslivjhqsu',
+//   password:'fc69850cd234c268fdb8e4e08d2dbdef0abffbc7407ad8e947862597cc7c0ef5z',
+//   database:'d36rg1oqg70k4c',
+//   // migrations:["dist/migration/**/*{.ts,.js}"],
+//   // entities:["dist/migrations/**/*{.ts.js}"],
+  
 //   // url:process.env.db_url,
-//   ssl:{
-//     rejectUnauthorized:false
-//   },
-//   synchronize: true,
+ 
+//   synchronize: false,
 //   autoLoadEntities: true,
-//    entities:[__dirname +'dist/**/*.entity{.ts..js}']
+//  extra:{
+//    ssl:{
+//                 rejectUnauthorized: false
+//               }
+//  }
 // }),
     
     AuthModule

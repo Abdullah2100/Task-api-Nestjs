@@ -5,8 +5,10 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { UsersRepository } from './users.repository';
 import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
-import { JwtStrategy } from './jwt.strategy';
+
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { RefrechTokenStrategy } from './stratigy/refrechToken.strategy';
+import { JwtStrategy } from './stratigy/jwt.strategy';
 
 @Module({
   imports: [
@@ -24,8 +26,8 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
     }),
     TypeOrmModule.forFeature([UsersRepository]),
   ],
-  providers: [AuthService, JwtStrategy],
+  providers: [AuthService, JwtStrategy,RefrechTokenStrategy],
   controllers: [AuthController],
-  exports: [JwtStrategy, PassportModule],
+  exports: [JwtStrategy, PassportModule,RefrechTokenStrategy],
 })
 export class AuthModule {}

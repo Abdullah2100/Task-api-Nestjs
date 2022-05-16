@@ -3,12 +3,14 @@ import { ConfigService } from '@nestjs/config';
 import { PassportStrategy } from '@nestjs/passport';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ExtractJwt, Strategy } from 'passport-jwt';
-import { JwtPayload } from './jwt-payload.interface';
-import { User } from './user.entity';
-import { UsersRepository } from './users.repository';
+import { RefrechToken } from '../dto/refrech-token.dto';
+import { JwtPayload } from '../jwt-payload.interface';
+import { User } from '../user.entity';
+import { UsersRepository } from '../users.repository';
+
 
 @Injectable()
-export class JwtStrategy extends PassportStrategy(Strategy) {
+export class RefrechTokenStrategy extends PassportStrategy(Strategy) {
   constructor(
     @InjectRepository(UsersRepository)
     private usersRepository: UsersRepository,
@@ -20,9 +22,9 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     });
   }
 
-  async validate(payload: JwtPayload): Promise<User> {
-    const { username } = payload;
-    const user: User = await this.usersRepository.findOne({ username });
+  async validate(payload: RefrechToken):Promise<RefrechToken>{
+    const {id} =payload;
+    const user: User = await this.usersRepository.findOne({ id});
 
     if (!user) {
       throw new UnauthorizedException();

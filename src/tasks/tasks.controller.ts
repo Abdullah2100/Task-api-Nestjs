@@ -20,7 +20,7 @@ import { TasksService } from './tasks.service';
 import { Logger } from '@nestjs/common';
 
 @Controller('tasks')
-@UseGuards(AuthGuard())
+@UseGuards(AuthGuard('jwtStratidyg'))
 export class TasksController {
   private logger = new Logger('TasksController');
 

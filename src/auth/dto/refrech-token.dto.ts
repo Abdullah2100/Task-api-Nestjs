@@ -7,5 +7,8 @@ export class RefrechToken{
 @IsNotEmpty()
 id:string
 
+@IsString()
+@IsNotEmpty()
+username
 
 }

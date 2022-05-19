@@ -10,7 +10,7 @@ import { UsersRepository } from '../users.repository';
 
 
 @Injectable()
-export class RefrechTokenStrategy extends PassportStrategy(Strategy) {
+export class RefrechTokenStrategy extends PassportStrategy(Strategy,'refreshToken') {
   constructor(
     @InjectRepository(UsersRepository)
     private usersRepository: UsersRepository,
@@ -23,8 +23,8 @@ export class RefrechTokenStrategy extends PassportStrategy(Strategy) {
   }
 
   async validate(payload: RefrechToken):Promise<RefrechToken>{
-    const {id} =payload;
-    const user: User = await this.usersRepository.findOne({ id});
+    const { username } = payload;
+    const user: User = await this.usersRepository.findOne({ username });
 
     if (!user) {
       throw new UnauthorizedException();

@@ -19,8 +19,8 @@ import { Task } from './task.entity';
 import { TasksService } from './tasks.service';
 import { Logger } from '@nestjs/common';
 
+
 @Controller('tasks')
-// @UseGuards(AuthGuard('jwtStratidyg'))
 @UseGuards(AuthGuard())
 export class TasksController {
   private logger = new Logger('TasksController');
@@ -73,3 +73,4 @@ export class TasksController {
     return this.tasksService.updateTaskStatus(id, status, user);
   }
 }
+

@@ -26,20 +26,29 @@ export class AuthService {
     authCredentialsDto: AuthCredentialsDto,
   ): Promise<{accessToken: string }> {
   
-    const { username, password } = authCredentialsDto;
+    const { username, password,devicePlatform } = authCredentialsDto;
     const user = await this.usersRepository.findOne({ username });
    
    
     if (user && (await bcrypt.compare(password, user.password))) {
       
       const payload: JwtPayload = { username };
+      const device={devicePlatform}
+     
+     if(device.devicePlatform==="Android"){
       const accessToken: string = await this.jwtService.sign(payload,{
         secret:this.config.get('JWT_SECRET'),
-        expiresIn: 60*60*3
+        
       });
-     
-     
       return {  accessToken };
+     }
+     else{
+      const accessToken: string = await this.jwtService.sign(payload,{
+        secret:this.config.get('JWT_SECRET'),
+        expiresIn:60*60
+      });
+      return {  accessToken };
+     }
      
     } else {
       throw new UnauthorizedException('Please check your login credentials');

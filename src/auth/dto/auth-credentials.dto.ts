@@ -14,6 +14,6 @@ export class AuthCredentialsDto {
   })
   password: string;
 
-  
+  @IsString()
   devicePlatform:string
 }

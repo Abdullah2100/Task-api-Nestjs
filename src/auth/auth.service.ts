@@ -33,9 +33,9 @@ export class AuthService {
     if (user && (await bcrypt.compare(password, user.password))) {
       
       const payload: JwtPayload = { username };
-      const device={devicePlatform}
+  
      
-     if(device.devicePlatform==="Android"){
+     if(devicePlatform==="Android"){
       const accessToken: string = await this.jwtService.sign(payload,{
         secret:this.config.get('JWT_SECRET'),
         

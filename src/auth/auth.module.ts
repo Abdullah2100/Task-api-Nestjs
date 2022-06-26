@@ -9,6 +9,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 
 import { JwtStrategy } from './jwt.strategy';
+import { refreshTokenGwt } from './refreshtoken.strategy';
 
 @Module({
   imports: [
@@ -24,8 +25,8 @@ import { JwtStrategy } from './jwt.strategy';
     }),
     TypeOrmModule.forFeature([UsersRepository]),
   ],
-  providers: [AuthService, JwtStrategy],
+  providers: [AuthService, JwtStrategy,refreshTokenGwt],
   controllers: [AuthController],
-  exports: [JwtStrategy, PassportModule],
+  exports: [JwtStrategy, PassportModule,refreshTokenGwt],
 })
 export class AuthModule {}

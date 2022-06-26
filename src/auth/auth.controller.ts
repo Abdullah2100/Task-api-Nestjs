@@ -2,7 +2,10 @@ import { Body, Controller, HttpCode, HttpStatus, Post, UseGuards } from '@nestjs
 import { AuthGuard } from '@nestjs/passport';
 import { retry } from 'rxjs/operators';
 import { AuthService } from './auth.service';
-import { AuthCredentialsDto } from './dto/auth-credentials.dto';
+import { AuthCredentialsDto, } from './dto/auth-credentials.dto';
+import { RefreshTokkenDto } from './dto/regresh-token.dto';
+import { refreshTokenGwt } from './refreshtoken.strategy';
+
 
 
 
@@ -20,11 +23,16 @@ export class AuthController {
   
   signIn(
     @Body() authCredentialsDto: AuthCredentialsDto,
-  ): Promise<{ accessToken: string}> {
+  ): Promise<{ accessToken: string,id:string}> {
    
     return this.authService.signIn(authCredentialsDto);
   }
 
+  @UseGuards(refreshTokenGwt)
+  @Post('/refreshToken')
+  refreshToken(@Body()refreshToken: RefreshTokkenDto ):Promise<{refreshToken:string}>{
+return this.authService.refreshToken(refreshToken)
+  }
 
  
 }

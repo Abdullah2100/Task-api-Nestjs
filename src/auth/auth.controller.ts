@@ -23,16 +23,11 @@ export class AuthController {
   
   signIn(
     @Body() authCredentialsDto: AuthCredentialsDto,
-  ): Promise<{ accessToken: string,id:string}> {
+  ): Promise<{ accessToken: string}> {
    
     return this.authService.signIn(authCredentialsDto);
   }
 
-  @UseGuards(refreshTokenGwt)
-  @Post('/refreshToken')
-  refreshToken(@Body()refreshToken: RefreshTokkenDto ):Promise<{refreshToken:string}>{
-return this.authService.refreshToken(refreshToken)
-  }
 
  
 }

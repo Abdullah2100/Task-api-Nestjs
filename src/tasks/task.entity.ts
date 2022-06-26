@@ -15,7 +15,7 @@ export class Task {
   @Column()
   description: string;
 
-  @Column({type:"enum",enum:TaskStatus,default:TaskStatus.OPEN})
+  @Column({type:"enum",enum:TaskStatus,default:TaskStatus.IN_PROGRESS})
   status: TaskStatus;
 
   @ManyToOne((_type) => User, (user) => user.tasks, { eager: false })

@@ -1,8 +1,9 @@
 import { IsBoolean, IsEnum } from "class-validator";
-import { TaskStatu } from "../task-Stateus.enum";
+import { TaskStatus } from "../task-status.enum";
+
 
 
 export class UpdateStatusDto{
-    @IsEnum(TaskStatu)
-    status:TaskStatu
+    @IsEnum(TaskStatus)
+    status:TaskStatus
 }
